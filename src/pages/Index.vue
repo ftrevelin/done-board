@@ -8,7 +8,6 @@
         <div class="card__body">
           <g-link :to="card.node.path" class="card__link"></g-link>
           <h1 class="card__title">{{card.node.title}}</h1>
-          <p class="card__abstract">{{card.node.abstract}}</p>
         </div>
       </div>
     </div>
@@ -21,7 +20,6 @@ query {
     edges {
       node {
         title
-        abstract
         image
         path
       }
@@ -33,7 +31,7 @@ query {
 <script>
 export default {
   metaInfo: {
-    title: "Home3"
+    title: "Home"
   }
 };
 </script>

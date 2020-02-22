@@ -13,8 +13,7 @@ collections:
       slug: "{{slug}}"
       fields:
         - {label: "Title", name: "title", widget: "string"}
-        - {label: "Abstract", name: "abstract", widget: "text"}
         - {label: "Image", name: "image", widget: "image"}
-        - {label: "Author", name: "author", widget: "string"}
         - {label: "Date", name: "date", widget: "datetime"}
-        - {label: "Body", name: "body", widget: "markdown"}
+        - {label: "Tags", name: "tags", widget: "list", required: false}
+        - {label: "Body", name: "body", widget: "markdown", required: false}
