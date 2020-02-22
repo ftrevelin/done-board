@@ -33,7 +33,7 @@ query {
 <script>
 export default {
   metaInfo: {
-    title: "My blog"
+    title: "Home"
   }
 };
 </script>
