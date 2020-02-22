@@ -1,6 +1,6 @@
 <template>
   <Layout>
-    <div class="container">
+<!--     <div class="container">
       <h1>List cards</h1>
       <div v-for="card in $page.cards.edges" :key="card.id" class="card d-flex">
         <div class="card__img"
@@ -10,6 +10,9 @@
           <h1 class="card__title">{{card.node.title}}</h1>
         </div>
       </div>
+    </div> -->
+    <div class="grid">
+      <div v-for="card in $page.cards.edges.concat($page.cards.edges,$page.cards.edges)" :key="card.id" class="grid-item" :style="{ 'background-image': 'url(' + card.node.image + ')' }">{{card.node.title}}</div>
     </div>
   </Layout>
 </template>
@@ -37,7 +40,18 @@ export default {
 </script>
 
 <style>
-.card {
+
+.grid-item {
+  float: left;
+  width: 80px;
+  height: 60px;
+  border: 2px solid hsla(0, 0%, 0%, 0.5);
+}
+
+.grid-item--width2 { width: 160px; }
+.grid-item--height2 { height: 140px; }
+
+/*.card {
   display: flex;
   align-items: center;
   box-shadow: 5px 5px 11px rgba(0, 0, 0, 0.15);
@@ -76,5 +90,5 @@ export default {
     width: 100%;
     height: 180px;
   }
-}
+}*/
 </style>
