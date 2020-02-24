@@ -1,10 +1,8 @@
 ---
-title: Primeiro Post
-image: /uploads/bg-be.jpg
-date: 2020-02-22T16:06:12.457Z
+title: Jojo Rabbit (2019)
+image: /uploads/jojo-rabbit.jpg
+date: 2020-02-16T04:00:12.457Z
 tags:
-  - teste
-  - teste2
-  - teste3
+  - movie
 ---
-Teste
+
