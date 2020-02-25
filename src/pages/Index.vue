@@ -1,16 +1,23 @@
 <template>
   <Layout>
+    <button @click.prevent="shufflelista()">Shuffle</button>
+    <br>
     <div
       v-masonry
       transition-duration="0.3s"
       item-selector=".grid-item"
       gutter="10"
+      horizontal-order="true"
       class="grid">
-      <div v-masonry-tile v-for="({node: card}) in dobraarray" :key="card.id" class="grid-item" >
+      <div v-masonry-tile v-for="({node: card}, index) in $page.cards.edges" :key="card.id" class="grid-item" >
         <img :src="card.image" :alt="card.title" class="grid-item-img">
-        <span class="grid-item-centered">{{card.title}}</span>
+        <div class="grid-item-centered">
+          <span>{{card.title}}</span></br>
+          <span>{{printags(card)}}</span>
+        </div>
       </div>
     </div>
+    
   </Layout>
 </template>
 
@@ -20,8 +27,9 @@ query {
     edges {
       node {
         title
-        image
+        image (width: 300, quality: 90)
         path
+        tags
       }
     }
   }
@@ -37,14 +45,19 @@ export default {
     title: "Home"
   },
   methods: {
-    randomaltura: function(){
-      return (_.random(1, 4) * 100)+'px';
+    shufflelista: function(){
+      var vthis = this;
+      this.$page.cards.edges = _.shuffle(this.$page.cards.edges);
+      this.$nextTick(function () {
+        this.$redrawVueMasonry()
+      });
     },
+    printags: function(card){
+      return _.join(card.tags, ', ');
+    }
   },
   computed: {
-    dobraarray: function(){
-      return _.concat(this.$page.cards.edges, this.$page.cards.edges, this.$page.cards.edges)
-    },
+
   },
   beforeMount: function(){
     const VueMasonryPlugin = require('vue-masonry').VueMasonryPlugin
@@ -71,6 +84,8 @@ export default {
 }
 
 .grid-item-centered {
+  display: none;
+  font-family: Fira Sans;
   position: absolute;
   bottom: 20px;
   right: 20px;
@@ -78,6 +93,9 @@ export default {
   color: white;
   padding-left: 20px;
   padding-right: 20px;
+}
+.grid-item:hover .grid-item-centered {
+  display: block;
 }
 
 </style>

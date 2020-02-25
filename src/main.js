@@ -4,6 +4,7 @@
 //import _ from 'lodash'
 
 import DefaultLayout from '~/layouts/Default.vue'
+require('typeface-fira-sans');
 
 export default function (Vue, { router, head, isClient }) {
   // Set default layout as a global component
