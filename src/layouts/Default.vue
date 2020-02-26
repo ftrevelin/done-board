@@ -14,7 +14,7 @@ query {
 
 <style>
 body{
-  background-color: #f4f4f4;
+  background-color: #525252;
   padding: 0;
   margin: 0;
 }@media screen and (min-width: 992px) {

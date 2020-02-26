@@ -1,6 +1,13 @@
 <template>
   <Layout>
-    <button @click.prevent="shufflelista()">Shuffle</button>
+    <select v-model="ordem">
+      <option value="date|desc">Data ↓</option>
+      <option value="date|asc">Data ↑</option>
+      <option value="title|desc">Nome ↓</option>
+      <option value="title|asc">Nome ↑</option>
+    </select>
+    <span class='btn' @click.prevent="tag_filtro = ''" :class="{'ativo':tag_filtro == ''}">Todas</span>
+    <span v-for="tag in tagsOrdenadas" class='btn' @click.prevent="tag_filtro = tag" :class="{'ativo':tag_filtro == tag}">{{tag}}</span>
     <br>
     <div
       v-masonry
@@ -9,11 +16,10 @@
       gutter="10"
       horizontal-order="true"
       class="grid">
-      <div v-masonry-tile v-for="({node: card}, index) in $page.cards.edges" :key="card.id" class="grid-item" >
+      <div v-masonry-tile v-for="(card, index) in cardsFiltrado" :key="index" class="grid-item" >
         <img :src="card.image" :alt="card.title" class="grid-item-img">
         <div class="grid-item-centered">
-          <span>{{card.title}}</span></br>
-          <span>{{printags(card)}}</span>
+          <span>{{card.title}}</span>
         </div>
       </div>
     </div>
@@ -27,7 +33,8 @@ query {
     edges {
       node {
         title
-        image (width: 300, quality: 90)
+        date
+        image
         path
         tags
       }
@@ -44,20 +51,47 @@ export default {
   metaInfo: {
     title: "Home"
   },
+  data () {
+    return {
+      ordem: 'date|desc',
+      tag_filtro: '',
+    }
+  },
   methods: {
-    shufflelista: function(){
-      var vthis = this;
-      this.$page.cards.edges = _.shuffle(this.$page.cards.edges);
-      this.$nextTick(function () {
-        this.$redrawVueMasonry()
-      });
-    },
     printags: function(card){
       return _.join(card.tags, ', ');
     }
   },
   computed: {
-
+    cardsMapa: function() {
+      return _.map(this.$page.cards.edges,'node');
+    },
+    cardsFiltrado: function() {
+      var vthis = this;
+      var ordemsplit = this.ordem.split("|");
+      var retorno = _.orderBy(this.cardsMapa, ordemsplit[0], ordemsplit[1]);
+      if (this.tag_filtro){
+        var retorno = _.filter(retorno, function(o){
+          return _.includes(o.tags, vthis.tag_filtro);
+        });
+      }
+      this.$nextTick(function () {
+        this.$redrawVueMasonry()
+      });
+      return retorno;
+    },
+    tagsOrdenadas: function() {
+      var qntd = _.reduce(this.cardsMapa, function(result, value, key) {
+        _.forEach(value.tags, function(o){
+          result[o] = result[o] || 0;
+          result[o]++;
+        })
+        return result;
+      }, {});
+      return _.reverse(_.sortBy(_.keys(qntd), function(o){
+        return qntd[o];
+      }));
+    }
   },
   beforeMount: function(){
     const VueMasonryPlugin = require('vue-masonry').VueMasonryPlugin
@@ -96,6 +130,18 @@ export default {
 }
 .grid-item:hover .grid-item-centered {
   display: block;
+}
+
+.btn {
+background-color: #333; /* adds a background colour to the button */
+color: #fff; /* changes the text colour */
+cursor: pointer; /* changes the mouse on hover */
+padding: 10px 30px; /* adds 10px of space to top and bottom of text and 30px of space on either side */ 
+}
+
+.btn:hover, .btn.ativo {
+background-color: #fff; /* adds a background hover colour to the button */
+color: #333; /* changes the text colour on hover */
 }
 
 </style>
