@@ -18,9 +18,9 @@
       class="grid">
       <div v-masonry-tile v-for="(card, index) in cardsFiltrado" :key="index" class="grid-item" >
         <img :src="card.image" :alt="card.title" class="grid-item-img">
-        <div class="grid-item-centered">
-          <span>{{card.title}}</span>
-        </div>
+        <div class="grid-item-text">
+          <span>{{card.title}} - {{printdata(card.date)}}</span>
+        </div> 
       </div>
     </div>
     
@@ -47,6 +47,12 @@ query {
 import Vue from 'vue'
 import _ from 'lodash'
 
+import moment from 'moment';
+moment.locale('pt'); // setar o locale para "pt" (Português)
+moment.updateLocale('pt', {
+  months : ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho","Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"]
+});
+
 export default {
   metaInfo: {
     title: "Home"
@@ -60,7 +66,10 @@ export default {
   methods: {
     printags: function(card){
       return _.join(card.tags, ', ');
-    }
+    },
+    printdata: function(data) {
+      return moment(data).format('D [de] MMMM')
+    },
   },
   computed: {
     cardsMapa: function() {
@@ -117,18 +126,18 @@ export default {
   width: 100%;
 }
 
-.grid-item-centered {
+.grid-item-text {
   display: none;
   font-family: Fira Sans;
   position: absolute;
-  bottom: 20px;
-  right: 20px;
   background-color: black;
   color: white;
   padding-left: 20px;
   padding-right: 20px;
+  bottom: 20px;
+  right: 20px;
 }
-.grid-item:hover .grid-item-centered {
+.grid-item:hover .grid-item-text {
   display: block;
 }
 

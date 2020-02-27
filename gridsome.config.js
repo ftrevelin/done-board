@@ -15,6 +15,12 @@ module.exports = {
         remark: {}
       }
     },
+    {
+      use: 'gridsome-plugin-netlify-cms',
+      options: {
+        publicPath: '/cms'
+      },
+    },
   ],
   transformers: {
     remark: {}
