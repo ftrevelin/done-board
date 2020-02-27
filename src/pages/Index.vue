@@ -1,14 +1,15 @@
 <template>
   <Layout>
-    <select v-model="ordem">
-      <option value="date|desc">Data ↓</option>
-      <option value="date|asc">Data ↑</option>
-      <option value="title|desc">Nome ↓</option>
-      <option value="title|asc">Nome ↑</option>
-    </select>
-    <span class='btn' @click.prevent="tag_filtro = ''" :class="{'ativo':tag_filtro == ''}">Todas</span>
-    <span v-for="tag in tagsOrdenadas" class='btn' @click.prevent="tag_filtro = tag" :class="{'ativo':tag_filtro == tag}">{{tag}}</span>
-    <br>
+    <div class="flex flex-wrap items-stretch">
+      <select v-model="ordem" class="flex-1 appearance-none bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 m-2">
+        <option value="date|desc">Data ↓</option>
+        <option value="date|asc">Data ↑</option>
+        <option value="title|desc">Nome ↓</option>
+        <option value="title|asc">Nome ↑</option>
+      </select>
+      <button class="btn btn-blue" @click.prevent="tag_filtro = ''" :class="{'ativo':tag_filtro == ''}">tudo</button>
+      <button v-for="tag in tagsOrdenadas" class='btn btn-blue' @click.prevent="tag_filtro = tag" :class="{'ativo':tag_filtro == tag}">{{tag}}</button>
+    </div>
     <div
       v-masonry
       transition-duration="0.3s"
@@ -141,16 +142,30 @@ export default {
   display: block;
 }
 
+/*
 .btn {
-background-color: #333; /* adds a background colour to the button */
-color: #fff; /* changes the text colour */
-cursor: pointer; /* changes the mouse on hover */
-padding: 10px 30px; /* adds 10px of space to top and bottom of text and 30px of space on either side */ 
+background-color: #333; 
+color: #fff;
+cursor: pointer; 
+padding: 10px 30px;
 }
 
 .btn:hover, .btn.ativo {
-background-color: #fff; /* adds a background hover colour to the button */
-color: #333; /* changes the text colour on hover */
+background-color: #fff;
+color: #333; 
 }
+*/
+
+
+  .btn {
+    @apply flex-1 font-bold py-2 px-4 rounded m-2;
+  }
+  .btn-blue {
+    @apply bg-blue-500 text-white;
+  }
+  .btn-blue:hover, .btn-blue.ativo {
+    @apply bg-blue-700;
+  }
+
 
 </style>

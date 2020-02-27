@@ -21,6 +21,9 @@ module.exports = {
         publicPath: '/cms'
       },
     },
+    {
+      use: 'gridsome-plugin-tailwindcss',
+    },
   ],
   transformers: {
     remark: {}
