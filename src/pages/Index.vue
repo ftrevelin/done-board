@@ -1,28 +1,46 @@
 <template>
   <Layout>
-    <div class="flex flex-wrap items-stretch">
-      <select v-model="ordem" class="flex-1 appearance-none bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 m-2">
+    <div class="flex flex-wrap">
+      <select v-model="ordem" class="appearance-none flex-none bg-gray-800 text-gray-200 px-4 py-2 rounded focus:outline-none focus:bg-gray-800 m-1">
+        <option disabled>Ordenar por:</option>
         <option value="date|desc">Data ↓</option>
         <option value="date|asc">Data ↑</option>
         <option value="title|desc">Nome ↓</option>
         <option value="title|asc">Nome ↑</option>
       </select>
-      <button class="btn btn-blue" @click.prevent="tag_filtro = ''" :class="{'ativo':tag_filtro == ''}">tudo</button>
-      <button v-for="tag in tagsOrdenadas" class='btn btn-blue' @click.prevent="tag_filtro = tag" :class="{'ativo':tag_filtro == tag}">{{tag}}</button>
+      <button class="btn" @click.prevent="tag_filtro = ''" :class="{'ativo':tag_filtro == ''}">todos</button>
+      <button v-for="tag in tagsOrdenadas" class='btn' @click.prevent="tag_filtro = tag" :class="{'ativo':tag_filtro == tag}"># {{tag}}</button>
     </div>
     <div
       v-masonry
       transition-duration="0.3s"
-      item-selector=".grid-item"
-      gutter="10"
+      item-selector=".masonry-grid-item"
       horizontal-order="true"
-      class="grid">
-      <div v-masonry-tile v-for="(card, index) in cardsFiltrado" :key="index" class="grid-item" >
+      class="masonry-grid">
+
+<!--       <div v-masonry-tile v-for="(card, index) in cardsFiltrado" :key="index" class="masonry-grid-item" >
         <img :src="card.image" :alt="card.title" class="grid-item-img">
         <div class="grid-item-text">
           <span>{{card.title}} - {{printdata(card.date)}}</span>
-        </div> 
+        </div>
+      </div> -->
+
+      <div class="w-full sm:w-1/3 lg:w-1/4 xl:w-1/6 overflow-hidden px-2 py-2 group masonry-grid-item" v-masonry-tile v-for="(card, index) in cardsFiltrado" :key="index">
+        <div class="relative">
+          <img class="rounded w-full" :src="card.image" :alt="card.title">
+          <div class="rounded-b bg-gray-800 w-full absolute bottom-0 hidden group-hover:block px-4 py-2">
+            <div class="text-gray-200 font-bold text-base mb-2">{{card.title}}</div>
+            <div class="flex">
+              <div class="flex-auto">
+                <span class="text-sm font-semibold text-orange-400 cursor-pointer mr-2" v-for="tag in card.tags" @click.prevent="tag_filtro = tag"># {{tag}}</span>
+              </div>
+              <div class="flex-auto text-gray-400 text-sm text-right">{{printdata(card.date)}}</div>
+            </div>
+          </div>
+        </div>
+        
       </div>
+
     </div>
     
   </Layout>
@@ -115,11 +133,14 @@ export default {
 
 <style>
 
-.grid-item {
+/*.masonry-grid-item{
+  width: 300px;
+}*/
+
+/*.grid-item {
   width: 300px;
   position: relative;
   text-align: center;
-  /*color: white;*/
   margin-bottom: 10px;
 }
 
@@ -140,7 +161,7 @@ export default {
 }
 .grid-item:hover .grid-item-text {
   display: block;
-}
+}*/
 
 /*
 .btn {
@@ -158,13 +179,10 @@ color: #333;
 
 
   .btn {
-    @apply flex-1 font-bold py-2 px-4 rounded m-2;
+    @apply appearance-none bg-gray-700 text-orange-400 px-4 py-2 font-semibold rounded m-1;
   }
-  .btn-blue {
-    @apply bg-blue-500 text-white;
-  }
-  .btn-blue:hover, .btn-blue.ativo {
-    @apply bg-blue-700;
+  .btn:hover, .btn.ativo {
+    @apply bg-gray-800;
   }
 
 
