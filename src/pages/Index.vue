@@ -1,16 +1,18 @@
 <template>
   <Layout>
+
     <div class="flex flex-wrap">
       <select v-model="ordem" class="appearance-none flex-none bg-gray-800 text-gray-200 px-4 py-2 rounded focus:outline-none focus:bg-gray-800 m-1">
         <option disabled>Ordenar por:</option>
-        <option value="date|desc">Data ↓</option>
-        <option value="date|asc">Data ↑</option>
-        <option value="title|desc">Nome ↓</option>
         <option value="title|asc">Nome ↑</option>
+        <option value="title|desc">Nome ↓</option>
+        <option value="date|asc">Data ↑</option>
+        <option value="date|desc">Data ↓</option>
       </select>
       <button class="btn" @click.prevent="tag_filtro = ''" :class="{'ativo':tag_filtro == ''}">todos</button>
-      <button v-for="tag in tagsOrdenadas" class='btn' @click.prevent="tag_filtro = tag" :class="{'ativo':tag_filtro == tag}"># {{tag}}</button>
+      <button v-for="tag in tagsOrdenadas" class='btn whitespace-no-wrap' @click.prevent="tag_filtro = tag" :class="{'ativo':tag_filtro == tag}"># {{tag}}</button>
     </div>
+
     <div
       v-masonry
       transition-duration="0.3s"
@@ -18,27 +20,17 @@
       horizontal-order="true"
       class="masonry-grid">
 
-<!--       <div v-masonry-tile v-for="(card, index) in cardsFiltrado" :key="index" class="masonry-grid-item" >
-        <img :src="card.image" :alt="card.title" class="grid-item-img">
-        <div class="grid-item-text">
-          <span>{{card.title}} - {{printdata(card.date)}}</span>
-        </div>
-      </div> -->
-
-      <div class="w-full sm:w-1/3 lg:w-1/4 xl:w-1/6 overflow-hidden px-2 py-2 group masonry-grid-item" v-masonry-tile v-for="(card, index) in cardsFiltrado" :key="index">
+      <div v-masonry-tile class="w-full sm:w-1/3 lg:w-1/4 xl:w-1/6 overflow-hidden px-2 py-2 group masonry-grid-item"  v-for="(card, index) in cardsFiltrado" :key="index">
         <div class="relative">
           <img class="rounded w-full" :src="card.image" :alt="card.title">
-          <div class="rounded-b bg-gray-800 w-full absolute bottom-0 hidden group-hover:block px-4 py-2">
+          <div v-view class="rounded-b bg-gray-800 w-full absolute hidden group-hover:block bottom-0 px-4 py-2">
             <div class="text-gray-200 font-bold text-base mb-2">{{card.title}}</div>
             <div class="flex">
-              <div class="flex-auto">
-                <span class="text-sm font-semibold text-orange-400 cursor-pointer mr-2" v-for="tag in card.tags" @click.prevent="tag_filtro = tag"># {{tag}}</span>
-              </div>
+              <span class="flex-none text-sm font-semibold text-orange-400 cursor-pointer mr-2" v-for="tag in card.tags" @click.prevent="tag_filtro = tag"># {{tag}}</span>
               <div class="flex-auto text-gray-400 text-sm text-right">{{printdata(card.date)}}</div>
             </div>
           </div>
         </div>
-        
       </div>
 
     </div>
@@ -103,9 +95,14 @@ export default {
           return _.includes(o.tags, vthis.tag_filtro);
         });
       }
-      this.$nextTick(function () {
-        this.$redrawVueMasonry()
-      });
+      // this.$nextTick(function () {
+      //   this.$redrawVueMasonry()
+      // });
+      setTimeout(function(){ 
+        if (typeof vthis.$redrawVueMasonry === "function") {
+          vthis.$redrawVueMasonry()
+        }
+      }, 100);
       return retorno;
     },
     tagsOrdenadas: function() {
@@ -127,6 +124,7 @@ export default {
     if (typeof this.$redrawVueMasonry === "function") {
       this.$redrawVueMasonry()
     }
+    
   }
 };
 </script>

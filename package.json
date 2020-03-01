@@ -13,7 +13,7 @@
     "gridsome-plugin-netlify-cms": "^1.0.9",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
-    "netlify-cms": "^2.10.28",
+    "netlify-cms": "^2.10.29",
     "typeface-fira-sans": "0.0.75",
     "vue-masonry": "^0.11.8"
   },
