@@ -20,7 +20,7 @@
       horizontal-order="true"
       class="masonry-grid">
 
-      <div v-masonry-tile class="w-full sm:w-1/3 lg:w-1/4 xl:w-1/6 overflow-hidden px-2 py-2 group masonry-grid-item"  v-for="(card, index) in cardsFiltrado" :key="index">
+      <div v-masonry-tile class="w-full sm:w-1/3 lg:w-1/4 xl:w-1/6 overflow-hidden px-1 py-1 group masonry-grid-item"  v-for="(card, index) in cardsFiltrado" :key="index">
         <div class="relative">
           <img class="rounded w-full" :src="card.image" :alt="card.title">
           <div v-view class="rounded-b bg-gray-800 w-full absolute hidden group-hover:block bottom-0 px-4 py-2">
@@ -79,7 +79,8 @@ export default {
       return _.join(card.tags, ', ');
     },
     printdata: function(data) {
-      return moment(data).format('D [de] MMMM')
+      var mdata = moment(data);
+      return (mdata.year() == moment().year()) ? mdata.format('D [de] MMMM') : mdata.format('D [de] MMMM[ ]YYYY');
     },
   },
   computed: {
